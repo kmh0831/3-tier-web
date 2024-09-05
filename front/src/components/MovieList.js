@@ -16,7 +16,7 @@ const MovieList = () => {
     <div className="movie-list">
       {movies.map((movie) => (
         <a key={movie.id} href={movie.netflixUrl} target="_blank" rel="noopener noreferrer">
-          <img src={movie.posterUrl} alt={movie.title} />
+          <img src={movie.posterUrl} alt={movie.title} className="movie-poster" />
         </a>
       ))}
     </div>

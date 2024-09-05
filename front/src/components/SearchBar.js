@@ -17,12 +17,13 @@ const SearchBar = () => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search by title or actor"
+        className="search-input"
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className="search-button">Search</button>
       <div className="search-results">
         {movies.map((movie) => (
           <a key={movie.id} href={movie.netflixUrl} target="_blank" rel="noopener noreferrer">
-            <img src={movie.posterUrl} alt={movie.title} />
+            <img src={movie.posterUrl} alt={movie.title} className="search-poster" />
           </a>
         ))}
       </div>

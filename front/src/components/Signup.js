@@ -30,6 +30,7 @@ const Signup = () => {
         value={userInfo.username}
         onChange={handleInputChange}
         placeholder="Username"
+        className="signup-input"
       />
       <input
         type="password"
@@ -37,6 +38,7 @@ const Signup = () => {
         value={userInfo.password}
         onChange={handleInputChange}
         placeholder="Password"
+        className="signup-input"
       />
       <input
         type="email"
@@ -44,8 +46,9 @@ const Signup = () => {
         value={userInfo.email}
         onChange={handleInputChange}
         placeholder="Email"
+        className="signup-input"
       />
-      <button onClick={handleSignup}>Sign Up</button>
+      <button onClick={handleSignup} className="signup-button">Sign Up</button>
     </div>
   );
 };

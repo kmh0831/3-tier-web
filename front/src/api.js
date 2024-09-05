@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://3.37.130.177'; // 백엔드 서버 주소
+const API_URL = 'http://your-ec2-public-ip';  // 백엔드 EC2 퍼블릭 IP 주소로 변경
 
 export const fetchMovies = async () => {
   try {

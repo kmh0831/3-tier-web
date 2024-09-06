@@ -30,23 +30,50 @@
         </div>
     </section>
 
-    <!-- 영화 카테고리 섹션 -->
+    <!-- 영화 카테고리 섹션 (DB에서 동적으로 받아오기) -->
     <section class="movie-section">
         <h2>Originals</h2>
-        <div class="movie-grid">
-            <div class="movie-item">
-                <img src="https://via.placeholder.com/600x900" alt="Inception">
-                <p>Inception</p>
-            </div>
-            <div class="movie-item">
-                <img src="https://via.placeholder.com/600x900" alt="Interstellar">
-                <p>Interstellar</p>
-            </div>
-            <!-- 다른 영화 포스터를 추가할 수 있습니다 -->
+        <div class="movie-grid" id="movie-grid">
+            <!-- 영화 목록이 JavaScript에 의해 여기에 동적으로 추가됨 -->
         </div>
     </section>
 
     <!-- JavaScript 파일 참조 -->
     <script src="%PUBLIC_URL%/scripts.js"></script>
+    <script>
+        // 백엔드에서 영화 목록을 가져와서 동적으로 추가하는 함수
+        function fetchMovies() {
+            fetch('http://13.125.70.251:5000/api/movies')
+                .then(response => response.json())
+                .then(movies => {
+                    const movieGrid = document.getElementById('movie-grid');
+                    movies.forEach(movie => {
+                        // 새로운 영화 항목 생성
+                        const movieItem = document.createElement('div');
+                        movieItem.classList.add('movie-item');
+
+                        // 영화 포스터 이미지 추가
+                        const img = document.createElement('img');
+                        img.src = movie.poster_url;
+                        img.alt = movie.title;
+
+                        // 영화 제목 추가
+                        const title = document.createElement('p');
+                        title.textContent = movie.title;
+
+                        // movieItem에 이미지와 제목 추가
+                        movieItem.appendChild(img);
+                        movieItem.appendChild(title);
+
+                        // movie-grid에 movieItem 추가
+                        movieGrid.appendChild(movieItem);
+                    });
+                })
+                .catch(error => console.error('영화 목록을 가져오는 중 오류 발생:', error));
+        }
+
+        // 페이지 로드 시 영화 목록을 불러옴
+        document.addEventListener('DOMContentLoaded', fetchMovies);
+    </script>
 </body>
 </html>

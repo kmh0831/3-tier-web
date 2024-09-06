@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function MovieList() {
-  const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    fetch('http://13.125.70.251:5000/api/movies')
-      .then(response => response.json())
-      .then(data => setMovies(data))
-      .catch(error => console.error('Error fetching movies:', error));
-  }, []);
+    useEffect(() => {
+        // 백엔드 API로부터 영화 목록 가져오기
+        fetch('http://13.125.70.251:5000/api/movies')
+            .then(response => response.json())
+            .then(data => setMovies(data))
+            .catch(error => console.error('영화 데이터를 가져오는 중 오류 발생:', error));
+    }, []);
 
-  return (
-    <div className="movie-list">
-      {movies.map(movie => (
-        <div key={movie.id} className="movie-item">
-          <img src={movie.poster} alt={movie.title} />
-          <h2>{movie.title}</h2>
-          <p>{movie.description}</p>
-        </div>
-      ))}
-    </div>
-  );
+    return (
+        <section className="movie-section">
+            <h2>Originals</h2>
+            <div className="movie-grid">
+                {movies.map(movie => (
+                    <div key={movie.id} className="movie-item">
+                        <img src={movie.poster_url} alt={movie.title} />
+                        <p>{movie.title}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
 }
 
 export default MovieList;

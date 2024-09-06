@@ -23,10 +23,10 @@
     <!-- 상단 포스터 슬라이더 -->
     <section class="slider">
         <div class="slide-show">
-            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+1" alt="Movie 1">
-            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+2" alt="Movie 2">
-            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+3" alt="Movie 3">
-            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+4" alt="Movie 4">
+            <img class="slides" id="image1" alt="Movie 1">
+            <img class="slides" id="image2" alt="Movie 2">
+            <img class="slides" id="image3" alt="Movie 3">
+            <img class="slides" id="image4" alt="Movie 4">
         </div>
     </section>
 
@@ -47,33 +47,48 @@
                 .then(response => response.json())
                 .then(movies => {
                     const movieGrid = document.getElementById('movie-grid');
+                    movieGrid.innerHTML = '';  // 기존 내용 초기화
                     movies.forEach(movie => {
-                        // 새로운 영화 항목 생성
                         const movieItem = document.createElement('div');
                         movieItem.classList.add('movie-item');
 
-                        // 영화 포스터 이미지 추가
                         const img = document.createElement('img');
                         img.src = movie.poster_url;
                         img.alt = movie.title;
 
-                        // 영화 제목 추가
                         const title = document.createElement('p');
                         title.textContent = movie.title;
 
-                        // movieItem에 이미지와 제목 추가
                         movieItem.appendChild(img);
                         movieItem.appendChild(title);
 
-                        // movie-grid에 movieItem 추가
                         movieGrid.appendChild(movieItem);
                     });
                 })
                 .catch(error => console.error('영화 목록을 가져오는 중 오류 발생:', error));
         }
 
-        // 페이지 로드 시 영화 목록을 불러옴
-        document.addEventListener('DOMContentLoaded', fetchMovies);
+        // 프리사인드 URL을 갱신하는 함수
+        function fetchPresignedUrls() {
+            fetch('/api/getPresignedUrls')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('image1').src = data.urls[0];
+                    document.getElementById('image2').src = data.urls[1];
+                    document.getElementById('image3').src = data.urls[2];
+                    document.getElementById('image4').src = data.urls[3];
+                })
+                .catch(error => console.error('프리사인드 URL을 가져오는 중 오류 발생:', error));
+        }
+
+        // 페이지 로드 시 영화 목록과 프리사인드 URL 갱신
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMovies();  // 영화 목록 로드
+            fetchPresignedUrls();  // 슬라이드 이미지 갱신
+        });
+
+        // 30분마다 프리사인드 URL 갱신
+        setInterval(fetchPresignedUrls, 1800000); // 30분 주기
     </script>
 </body>
 </html>

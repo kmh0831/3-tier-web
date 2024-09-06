@@ -22,13 +22,13 @@
 
     <!-- 상단 포스터 슬라이더 -->
     <section class="slider">
-        <div class="slide-show">
-            <img class="slides" id="image1" alt="Movie 1">
-            <img class="slides" id="image2" alt="Movie 2">
-            <img class="slides" id="image3" alt="Movie 3">
-            <img class="slides" id="image4" alt="Movie 4">
-        </div>
-    </section>
+      <div class="slide-show">
+          <img class="slides" src="https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/111.jpg" alt="Movie 1">
+          <img class="slides" src="https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/222.jpg" alt="Movie 2">
+          <img class="slides" src="https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/333.jpg" alt="Movie 3">
+          <img class="slides" src="https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/444.jpg" alt="Movie 4">
+      </div>
+  </section>
 
     <!-- 영화 카테고리 섹션 (DB에서 동적으로 받아오기) -->
     <section class="movie-section">
@@ -68,27 +68,11 @@
                 .catch(error => console.error('영화 목록을 가져오는 중 오류 발생:', error));
         }
 
-        // 프리사인드 URL을 갱신하는 함수
-        function fetchPresignedUrls() {
-            fetch('/api/getPresignedUrls')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('image1').src = data.urls[0];
-                    document.getElementById('image2').src = data.urls[1];
-                    document.getElementById('image3').src = data.urls[2];
-                    document.getElementById('image4').src = data.urls[3];
-                })
-                .catch(error => console.error('프리사인드 URL을 가져오는 중 오류 발생:', error));
-        }
-
-        // 페이지 로드 시 영화 목록과 프리사인드 URL 갱신
+        // 페이지 로드 시 영화 목록과 슬라이드 이미지 로드
         document.addEventListener('DOMContentLoaded', () => {
             fetchMovies();  // 영화 목록 로드
-            fetchPresignedUrls();  // 슬라이드 이미지 갱신
+            fetchImageUrls();  // 슬라이드 이미지 갱신
         });
-
-        // 30분마다 프리사인드 URL 갱신
-        setInterval(fetchPresignedUrls, 1800000); // 30분 주기
     </script>
 </body>
 </html>

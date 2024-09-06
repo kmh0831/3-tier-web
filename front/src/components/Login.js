@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 const poolData = {
-  UserPoolId: 'kmhyuk1018',  // AWS Cognito User Pool ID
-  ClientId: 'kmhyuk0831'    // AWS Cognito App Client ID
+  UserPoolId: 'ap-northeast-2_NZECem9mi',  // AWS Cognito User Pool ID
+  ClientId: '689kbbig96810fr8fpg6dh6nnq'    // AWS Cognito App Client ID
 };
 
 const userPool = new CognitoUserPool(poolData);

@@ -1,0 +1,55 @@
+body {
+    background-color: #1c1e21;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #181a1d;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.navbar .nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.navbar .nav-links a {
+    text-decoration: none;
+    color: white;
+}
+
+.movie-section {
+    padding: 20px;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.movie-item img {
+    width: 100%;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.movie-item img:hover {
+    transform: scale(1.05);
+}
+
+.movie-item p {
+    margin-top: 10px;
+    font-size: 18px;
+}

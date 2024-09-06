@@ -1,29 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTT Movie Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
-  <!-- 상단 네비게이션 바 -->
-  <nav class="navbar">
-      <div class="logo">OTT Movie Service</div>
-      <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Search</a></li>
-          <li><a href="#">Watchlist</a></li>
-          <li><a href="#">Movies</a></li>
-          <li><a href="#">Series</a></li>
-      </ul>
-      <div class="profile">My Profile</div>
-  </nav>
+    <!-- 상단 네비게이션 바 -->
+    <nav class="navbar">
+        <div class="logo">OTT Movie Service</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Search</a></li>
+            <li><a href="#">Watchlist</a></li>
+            <li><a href="#">Movies</a></li>
+            <li><a href="#">Series</a></li>
+        </ul>
+        <div class="profile">My Profile</div>
+    </nav>
 
-  <!-- 영화 카테고리 섹션 -->
-  <section class="movie-section">
-      <h2>Originals</h2>
-      <div class="movie-grid">
-          <div class="movie-item">
-              <img src="https://via.placeholder.com/200x300" alt="Movie Title">
-              <p>Inception</p>
-          </div>
-          <div class="movie-item">
-              <img src="https://via.placeholder.com/200x300" alt="Movie Title">
-              <p>Interstellar</p>
-          </div>
-      </div>
-  </section>
+    <!-- 상단 포스터 슬라이더 -->
+    <section class="slider">
+        <div class="slide-show">
+            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+1" alt="Movie 1">
+            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+2" alt="Movie 2">
+            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+3" alt="Movie 3">
+            <img class="slides" src="https://via.placeholder.com/600x900?text=Movie+4" alt="Movie 4">
+        </div>
+    </section>
+
+    <!-- 영화 카테고리 섹션 -->
+    <section class="movie-section">
+        <h2>Originals</h2>
+        <div class="movie-grid">
+            <div class="movie-item">
+                <img src="https://via.placeholder.com/600x900" alt="Inception">
+                <p>Inception</p>
+            </div>
+            <div class="movie-item">
+                <img src="https://via.placeholder.com/600x900" alt="Interstellar">
+                <p>Interstellar</p>
+            </div>
+            <!-- 다른 영화 포스터를 추가할 수 있습니다 -->
+        </div>
+    </section>
+
+    <!-- JavaScript 파일 참조 -->
+    <script src="%PUBLIC_URL%/scripts.js"></script>
 </body>
+</html>

@@ -1,15 +1,38 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const movieRoutes = require('./routes/movieRoutes');
-const userRoutes = require('./routes/userRoutes');
+const cors = require('cors');
+const mysql = require('mysql2/promise');
+require('dotenv').config();
 
 const app = express();
-app.use(bodyParser.json());
+const PORT = 5000;
 
-app.use('/movies', movieRoutes);
-app.use('/user', userRoutes);
+// CORS 설정
+app.use(cors());
 
-const PORT = process.env.PORT || 4000;
+// MySQL RDS 데이터베이스 연결 설정
+const dbConfig = {
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+};
+
+app.get('/api/movies', async (req, res) => {
+  let connection;
+
+  try {
+    connection = await mysql.createConnection(dbConfig);
+    const [rows] = await connection.query('SELECT * FROM movies');
+    res.json(rows);
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(500).json({ error: 'Failed to retrieve movies' });
+  } finally {
+    if (connection) await connection.end();
+  }
+});
+
+// 서버 시작
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

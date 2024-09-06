@@ -1,21 +1,18 @@
 import React from 'react';
 import MovieList from './components/MovieList';
-import SearchBar from './components/SearchBar';
-import Signup from './components/Signup';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Login from './components/Login';
+import './App.css';
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<MovieList />} />
-          <Route path="/search" element={<SearchBar />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <h1>OTT Movie Service</h1>
+      {/* Login 컴포넌트 */}
+      <Login />
+      {/* MovieList 컴포넌트 */}
+      <MovieList />
+    </div>
   );
-};
+}
 
 export default App;

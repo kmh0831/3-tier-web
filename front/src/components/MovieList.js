@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { fetchMovies } from '../api';
+import React, { useState, useEffect } from 'react';
 
-const MovieList = () => {
+function MovieList() {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const getMovies = async () => {
-      const data = await fetchMovies();
-      setMovies(data);
-    };
-    getMovies();
+    fetch('http://localhost:5000/api/movies')
+      .then(response => response.json())
+      .then(data => setMovies(data))
+      .catch(error => console.error('Error fetching movies:', error));
   }, []);
 
   return (
     <div className="movie-list">
-      {movies.map((movie) => (
-        <a key={movie.id} href={movie.netflixUrl} target="_blank" rel="noopener noreferrer">
-          <img src={movie.posterUrl} alt={movie.title} className="movie-poster" />
-        </a>
+      {movies.map(movie => (
+        <div key={movie.id} className="movie-item">
+          <img src={movie.poster} alt={movie.title} />
+          <h2>{movie.title}</h2>
+          <p>{movie.description}</p>
+        </div>
       ))}
     </div>
   );
-};
+}
 
 export default MovieList;

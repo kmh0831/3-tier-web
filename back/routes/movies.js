@@ -19,8 +19,9 @@ router.get('/movies', async (req, res) => {
 
   try {
     connection = await mysql.createConnection(dbConfig);
+    // DB에서 영화 리스트를 가져옴 (trailer_url 포함)
     const [rows] = await connection.query('SELECT * FROM movies');
-    res.json(rows);
+    res.json(rows);  // 모든 영화 데이터를 JSON 형태로 반환
   } catch (error) {
     console.error('Database connection error:', error);
     res.status(500).json({ error: 'Failed to retrieve movies' });

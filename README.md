@@ -71,20 +71,6 @@ CREATE TABLE movies (
 );
 
 
-
-
-INSERT INTO movies (title, poster_url) VALUES 
-('너의 이름은', 'https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/111.jpg'),
-('반지의 제왕-왕의 귀환', 'https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/222.jpg');
-
-INSERT INTO movies (title, poster_url) VALUES
-('어벤져스 엔드 게임', 'https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/333.jpg');
-
-INSERT INTO movies (title, poster_url) VALUES
-('인터스텔라', 'https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/444.jpg');
-
-
-
 INSERT INTO movies (title, description, poster_url, trailer_url)
 VALUES ('너의 이름은', '영화 1의 설명', 'https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/111.jpg', 'https://www.youtube.com/embed/0GtEGZv1_Os'),
        ('반지의 제왕-왕의 귀환', '영화 2의 설명', 'https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/222.jpg', 'https://www.youtube.com/embed/zckJCxYxn1g'),

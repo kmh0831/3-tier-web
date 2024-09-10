@@ -1,67 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import MovieDetail from './MovieDetail'; // MovieDetail을 모달로 사용
 
 function MovieList() {
   const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState(null);
-  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [selectedMovie, setSelectedMovie] = useState(null); // 선택된 영화를 저장
 
   useEffect(() => {
     // 백엔드 API로부터 영화 목록 가져오기
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/movies`)
+    fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/movies`)
       .then((response) => response.json())
       .then((data) => setMovies(data))
       .catch((error) => console.error('영화 데이터를 가져오는 중 오류 발생:', error));
-
-    // 찜한 영화 목록 가져오기
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/movies/favorites`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    })
-      .then((response) => response.json())
-      .then((data) => setFavoriteMovies(data))
-      .catch((error) => console.error('찜한 영화 데이터를 가져오는 중 오류 발생:', error));
   }, []);
 
   const openModal = (movie) => {
-    setSelectedMovie(movie);
+    setSelectedMovie(movie); // 영화 선택 시 모달 열기
   };
 
   const closeModal = () => {
-    setSelectedMovie(null);
-  };
-
-  // 찜하기 추가/취소 처리
-  const toggleFavorite = (movie) => {
-    const isFavorited = favoriteMovies.some(fav => fav.id === movie.id);
-
-    const method = isFavorited ? 'DELETE' : 'POST';
-    const url = isFavorited
-      ? `${process.env.REACT_APP_BACKEND_URL}/api/movies/favorite/${movie.id}`
-      : `${process.env.REACT_APP_BACKEND_URL}/api/movies/favorite`;
-
-    fetch(url, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify({ movieId: movie.id }),
-    })
-      .then(() => {
-        // 찜하기 상태 업데이트
-        if (isFavorited) {
-          setFavoriteMovies(prevFavorites =>
-            prevFavorites.filter(fav => fav.id !== movie.id)
-          );
-        } else {
-          setFavoriteMovies(prevFavorites => [...prevFavorites, movie]);
-        }
-      })
-      .catch((error) => console.error('찜하기 처리 중 오류 발생:', error));
-  };
-
-  const handleWatchClick = (movie) => {
-    // 영화 시청 페이지로 이동
-    window.open(`${process.env.REACT_APP_BACKEND_URL}/api/movies/${movie.id}/watch`);
+    setSelectedMovie(null); // 모달 닫기
   };
 
   return (
@@ -76,34 +33,8 @@ function MovieList() {
         ))}
       </div>
 
-      {selectedMovie && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>&times;</span>
-            <div className="modal-video">
-              <iframe
-                src={selectedMovie.trailer_url}
-                width="100%"
-                height="315"
-                frameborder="0"
-                allowfullscreen
-              ></iframe>
-            </div>
-            <div className="modal-info">
-              <span className="movie-title">{selectedMovie.title}</span>
-              <button
-                className={`fav-button ${favoriteMovies.some((fav) => fav.id === selectedMovie.id) ? 'favorited' : ''}`}
-                onClick={() => toggleFavorite(selectedMovie)}
-              >
-                {favoriteMovies.some((fav) => fav.id === selectedMovie.id) ? '찜하기 취소' : '찜하기'}
-              </button>
-              <button className="watch-button" onClick={() => handleWatchClick(selectedMovie)}>
-                영화 시청
-              </button>
-            </div>
-            <div className="movie-description">{selectedMovie.description}</div>
-          </div>
-        </div>
+      {selectedMovie && (  // 영화가 선택되었을 때만 모달을 렌더링
+        <MovieDetail movie={selectedMovie} onClose={closeModal} />
       )}
     </section>
   );

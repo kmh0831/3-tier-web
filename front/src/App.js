@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom'; // Link 컴포넌트 추가
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom'; 
 import MovieList from './components/MovieList';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Profile from './components/Profile'; // 프로필 컴포넌트 추가
+import Profile from './components/Profile'; 
+import MovieDetail from './components/MovieDetail';  // MovieDetail 컴포넌트 추가
 import Slider from './components/Slider';  
 import './App.css';
 
@@ -19,7 +20,7 @@ function App() {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
-      localStorage.removeItem('token');  // 만료된 토큰 삭제
+      localStorage.removeItem('token');
       localStorage.removeItem('token_expiration');
     }
   }, []);
@@ -38,7 +39,7 @@ function App() {
             </div>
             <nav className="nav-links">
               <ul>
-                <li><a href="#">홈</a> |</li>
+                <li><Link to="/">홈</Link> |</li>
                 <li><a href="#">검색</a> |</li>
                 <li><a href="#">영화</a> |</li>
                 <li><a href="#">시리즈</a></li>
@@ -93,6 +94,12 @@ function App() {
           <Route
             path="/profile"
             element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+          />
+
+          {/* 영화 상세 페이지: 영화 ID를 경로에서 받음 */}
+          <Route
+            path="/movies/:movieId"  // movieId로 수정
+            element={isAuthenticated ? <MovieDetail /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>

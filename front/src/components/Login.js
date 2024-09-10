@@ -1,54 +1,67 @@
 import React, { useState } from 'react';
-import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { CognitoUserPool, AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
+import { useNavigate } from 'react-router-dom';
+import { awsConfig } from '../awsConfig';
+import './Login.css'; // Login.js에서 스타일을 불러오기
 
-const poolData = {
-  UserPoolId: 'ap-northeast-2_NZECem9mi',  // AWS Cognito User Pool ID
-  ClientId: '689kbbig96810fr8fpg6dh6nnq'    // AWS Cognito App Client ID
-};
+// Cognito User Pool 설정
+const userPool = new CognitoUserPool({
+  UserPoolId: awsConfig.userPoolId,
+  ClientId: awsConfig.clientId,
+});
 
-const userPool = new CognitoUserPool(poolData);
-
-function Login() {
-  const [username, setUsername] = useState('');
+function Login({ setIsAuthenticated }) {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
+  // 로그인 처리 함수
   const handleLogin = () => {
     const authDetails = new AuthenticationDetails({
-      Username: username,
+      Username: email,
       Password: password,
     });
 
     const cognitoUser = new CognitoUser({
-      Username: username,
+      Username: email,
       Pool: userPool,
     });
 
     cognitoUser.authenticateUser(authDetails, {
       onSuccess: (result) => {
         const token = result.getAccessToken().getJwtToken();
-        console.log('Access Token:', token);
+        const expirationTime = new Date().getTime() + 6 * 60 * 60 * 1000; // 6시간 만료 시간
+        localStorage.setItem('token', token);
+        localStorage.setItem('token_expiration', expirationTime);
+        setIsAuthenticated(true);
+        navigate('/');  // 메인 페이지로 이동
       },
       onFailure: (err) => {
-        console.error('Login Error:', err);
+        console.error('Login failed:', err);
+        alert(`로그인에 실패했습니다. 오류: ${err.message}`);  // 오류 메시지 추가
       },
     });
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
+    <div className="login-background">
+      <div className="login-container">
+        <h2>Login</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
+        <button onClick={() => navigate('/signup')}>Sign Up</button>  {/* 회원가입 버튼 */}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,25 @@
+.profile-container {
+    display: flex;
+  }
+  
+  .profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    gap: 10px;
+  }
+  
+  .profile-sidebar button {
+    background-color: #3b3f45;
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .profile-details {
+    margin-left: 20px;
+    flex-grow: 1;
+  }
+  

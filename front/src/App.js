@@ -4,12 +4,13 @@ import MovieList from './components/MovieList';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Profile from './components/Profile'; 
-import MovieDetail from './components/MovieDetail';  // MovieDetail 컴포넌트 추가
+import MovieDetail from './components/MovieDetail';  
 import Slider from './components/Slider';  
-import './App.css';
+import './App.css'; // 메인 스타일 가져오기
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);  // 프로필 모달 상태 추가
 
   // 로그인 상태 확인 (토큰 만료 시간도 포함)
   useEffect(() => {
@@ -25,6 +26,16 @@ function App() {
     }
   }, []);
 
+  // 프로필 모달 열기
+  const openProfile = () => {
+    setIsProfileOpen(true);
+  };
+
+  // 프로필 모달 닫기
+  const closeProfile = () => {
+    setIsProfileOpen(false);
+  };
+
   return (
     <Router>
       <div className={`App ${!isAuthenticated ? 'background' : ''}`}>
@@ -35,7 +46,7 @@ function App() {
               <img src="https://web-images-kmhyuk1018.s3.ap-northeast-2.amazonaws.com/logo.png" alt="ROCKET 로고" />
             </div>
             <div className="profile" id="profile-tab">
-              <Link to="/profile">프로필</Link> {/* 프로필 페이지로 이동 */}
+              <button onClick={openProfile}>프로필</button> {/* 프로필 모달 열기 */}
             </div>
             <nav className="nav-links">
               <ul>
@@ -48,6 +59,9 @@ function App() {
             <Slider />
           </header>
         )}
+
+        {/* 프로필 모달이 열렸을 때 보여줌 */}
+        {isProfileOpen && <Profile onClose={closeProfile} setIsAuthenticated={setIsAuthenticated} />}
 
         <Routes>
           {/* 로그인한 사용자만 접근 가능한 메인 페이지 */}
@@ -90,15 +104,9 @@ function App() {
             }
           />
 
-          {/* 프로필 페이지 */}
+          {/* 영화 상세 페이지 */}
           <Route
-            path="/profile"
-            element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
-          />
-
-          {/* 영화 상세 페이지: 영화 ID를 경로에서 받음 */}
-          <Route
-            path="/movies/:movieId"  // movieId로 수정
+            path="/movies/:movieId"  
             element={isAuthenticated ? <MovieDetail /> : <Navigate to="/login" />}
           />
         </Routes>

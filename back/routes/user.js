@@ -1,5 +1,6 @@
 const express = require('express');
 const AWS = require('aws-sdk');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const router = express.Router();
@@ -43,6 +44,43 @@ router.post('/signup', async (req, res) => {
   } catch (error) {
     console.error('Error during Cognito signup:', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// JWT 토큰에서 사용자 ID 추출 함수
+function getUserIdFromToken(authHeader) {
+  if (!authHeader) return null;
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.decode(token); // 토큰을 디코드하여 사용자 정보 추출
+    return decoded.sub;
+  } catch (error) {
+    console.error('JWT verification failed:', error);
+    return null;
+  }
+}
+
+// 사용자 정보 조회 API
+router.get('/me', async (req, res) => {
+  const userId = getUserIdFromToken(req.headers.authorization);
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const params = {
+    UserPoolId: process.env.COGNITO_USER_POOL_ID, // Cognito 사용자 풀 ID
+    Username: userId, // 사용자 ID (sub 값)
+  };
+
+  try {
+    const userData = await cognito.adminGetUser(params).promise();
+    res.json({
+      email: userData.UserAttributes.find(attr => attr.Name === 'email').Value,
+      name: userData.UserAttributes.find(attr => attr.Name === 'name').Value,
+    });
+  } catch (error) {
+    console.error('Failed to get user data from Cognito:', error);
+    res.status(500).json({ error: 'Failed to retrieve user data' });
   }
 });
 

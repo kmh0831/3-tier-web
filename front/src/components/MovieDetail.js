@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../App.css';
+import './MovieDetail.css'; // 영화 상세 스타일을 따로 관리
 
 function MovieDetail({ movie, onClose }) {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -46,9 +46,9 @@ function MovieDetail({ movie, onClose }) {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
+    <div className="movie-modal">
+      <div className="movie-modal-content">
+        <span className="movie-close" onClick={onClose}>&times;</span>
         <div className="modal-video">
           <iframe
             src={movie.trailer_url}

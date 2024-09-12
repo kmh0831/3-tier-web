@@ -10,7 +10,7 @@ import './App.css'; // 메인 스타일 가져오기
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);  // 프로필 모달 상태 추가
+  const [isProfileOpen, setIsProfileOpen] = useState(false); // 프로필 모달 상태
 
   // 로그인 상태 확인 (토큰 만료 시간도 포함)
   useEffect(() => {
@@ -26,12 +26,17 @@ function App() {
     }
   }, []);
 
-  // 프로필 모달 열기
+  // 로그아웃 시 리다이렉트 확인
+  useEffect(() => {
+    if (!isAuthenticated && window.location.pathname !== '/login') {
+      window.location.href = '/login';  // 로그인 페이지로 강제 리다이렉트
+    }
+  }, [isAuthenticated]);
+
   const openProfile = () => {
     setIsProfileOpen(true);
   };
 
-  // 프로필 모달 닫기
   const closeProfile = () => {
     setIsProfileOpen(false);
   };
@@ -60,8 +65,8 @@ function App() {
           </header>
         )}
 
-        {/* 프로필 모달이 열렸을 때 보여줌 */}
-        {isProfileOpen && <Profile onClose={closeProfile} setIsAuthenticated={setIsAuthenticated} />}
+        {/* 프로필 모달 */}
+        {isProfileOpen && <Profile onClose={closeProfile} />}
 
         <Routes>
           {/* 로그인한 사용자만 접근 가능한 메인 페이지 */}

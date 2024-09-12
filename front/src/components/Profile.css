@@ -1,6 +1,4 @@
-/* Profile.css */
-
-/* 모달 전체 스타일 */
+/* 모달 스타일 */
 .profile-modal {
   display: flex;
   justify-content: center;
@@ -25,11 +23,6 @@
   padding: 20px;
   background-color: #2a2c30;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  overflow-y: auto;
-}
-
-.profile-modal-content::-webkit-scrollbar {
-  display: none;
 }
 
 .profile-close {
@@ -42,8 +35,7 @@
   color: white;
 }
 
-/* 왼쪽 배너 섹션 */
-.profile-modal-banner {
+.modal-banner {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -54,11 +46,11 @@
   border-right: 2px solid #fff;
 }
 
-.profile-banner-item {
+.banner-item {
   margin-bottom: 20px;
   padding: 10px;
   background-color: white;
-  color: black;  /* 글씨 색상을 검은색으로 설정 */
+  color: black;
   border-radius: 5px;
   cursor: pointer;
   width: 100px;
@@ -66,27 +58,32 @@
   transition: background-color 0.3s ease;
 }
 
-.profile-banner-item:hover {
+.banner-item:hover {
   background-color: red;
   color: white;
 }
 
-/* 오른쪽 프로필 정보 영역 */
 .profile-info {
   flex: 1;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;  /* 콘텐츠를 위쪽에 위치시킴 */
+  justify-content: flex-start;
   color: white;
 }
 
-.profile-info h2 {
-  font-size: 24px;
-  margin-bottom: 20px;  /* 닉네임 아래 20px 간격 */
+.user-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2개의 열로 나눔 */
+  grid-gap: 10px;
+  margin-bottom: 20px;
 }
 
-.profile-info p {
-  font-size: 18px;
-  margin-top: 20px;  /* 닉네임에서 20px 아래로 이동 */
+.info-block {
+  background-color: #444;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+  font-size: 16px;
 }

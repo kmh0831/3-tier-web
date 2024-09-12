@@ -104,4 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error("로그인 요청 중 오류 발생:", err));
     });
+
+    // 로그아웃 후 페이지 리다이렉트
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('token');  // JWT 토큰 삭제
+            localStorage.removeItem('token_expiration');  // 만료 시간 삭제
+            window.location.href = '/login';  // 로그인 페이지로 리다이렉트
+        });
+    }
 });

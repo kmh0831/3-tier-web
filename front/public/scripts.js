@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const movieModal = document.getElementById('movie-modal');
     const closeMovieBtn = document.querySelector('.close');
 
-    // 모달 표시 설정
     if (movieModal && closeMovieBtn) {
         // 모달 닫기 버튼 클릭 시 모달 닫기
         closeMovieBtn.addEventListener('click', () => {
             movieModal.style.display = 'none';
-            document.getElementById('movie-trailer').src = ''; // 비디오 멈춤
+            const trailerElement = document.getElementById('movie-trailer');
+            if (trailerElement) trailerElement.src = ''; // 비디오 멈춤
         });
 
         // 모달 표시 함수 (화면 중앙에 위치하도록)
@@ -57,53 +57,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 모달 열기 이벤트 (예: 포스터 클릭 시)
         const posterElements = document.querySelectorAll('.movie-item');
-        posterElements.forEach((poster) => {
-            poster.addEventListener('click', openModal);
-        });
+        if (posterElements.length > 0) {
+            posterElements.forEach((poster) => {
+                poster.addEventListener('click', openModal);
+            });
+        }
     }
 
     // 로그인 상태 확인 후 로그인 모달 표시
     const token = localStorage.getItem('token');
-    if (!token) {
-        const loginModal = document.getElementById('login-modal');
-        if (loginModal) {
-            loginModal.style.display = 'block';
-        }
+    const loginModal = document.getElementById('login-modal');
+    
+    if (!token && loginModal) {
+        loginModal.style.display = 'block';
     } else {
         if (typeof fetchMovies === 'function') {
             fetchMovies();
         }
-        const loginModal = document.getElementById('login-modal');
         if (loginModal) {
             loginModal.style.display = 'none';
         }
     }
 
     // 로그인 처리
-    document.getElementById('login-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
 
-        fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/user/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-                document.getElementById('login-modal').style.display = 'none';
-                if (typeof fetchMovies === 'function') {
-                    fetchMovies();
+            fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/user/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('로그인 요청이 실패했습니다.');
                 }
-            } else {
-                alert('로그인 실패');
-            }
-        })
-        .catch(err => console.error("로그인 요청 중 오류 발생:", err));
-    });
+                return res.json();
+            })
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem('token', data.token);
+                    if (loginModal) {
+                        loginModal.style.display = 'none';
+                    }
+                    if (typeof fetchMovies === 'function') {
+                        fetchMovies();
+                    }
+                } else {
+                    alert('로그인 실패');
+                }
+            })
+            .catch(err => {
+                console.error("로그인 요청 중 오류 발생:", err);
+                alert(`로그인에 실패했습니다. 오류: ${err.message}`);
+            });
+        });
+    }
 
     // 로그아웃 후 페이지 리다이렉트
     const logoutButton = document.getElementById('logout-button');

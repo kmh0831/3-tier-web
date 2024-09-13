@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const router = express.Router();
 
-// MySQL RDS 연결 설정
+// MySQL RDS 데이터베이스 연결 설정
 const dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,

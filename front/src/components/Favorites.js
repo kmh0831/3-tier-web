@@ -5,7 +5,7 @@ function Favorites() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/movies/favorites`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/me/favorites`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())
@@ -15,13 +15,16 @@ function Favorites() {
 
   return (
     <div>
-      <h2>찜한 목록</h2>
-      {favorites.map((movie) => (
-        <div key={movie.id}>
-          <img src={movie.poster_url} alt={movie.title} />
-          <p>{movie.title}</p>
-        </div>
-      ))}
+      {favorites.length > 0 ? (
+        favorites.map((movie) => (
+          <div key={movie.title} className="favorite-item">
+            <img src={movie.poster_url} alt={movie.title} className="favorite-poster" />
+            <p className="favorite-title">{movie.title}</p>
+          </div>
+        ))
+      ) : (
+        <p>찜한 영화가 없습니다.</p>
+      )}
     </div>
   );
 }

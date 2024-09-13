@@ -32,11 +32,9 @@ function Profile({ onClose }) {
     localStorage.removeItem('token');
     localStorage.removeItem('token_expiration');
 
-    // 모달을 닫고 강제 리다이렉트
+    // 모달을 닫고 리다이렉트
     onClose();  // 모달 닫기
-    setTimeout(() => {
-      window.location.href = '/login';  // 로그인 페이지로 강제 리다이렉트
-    }, 500);  // 모달이 닫힌 후 약간의 딜레이를 줌
+    navigate('/login');  // 로그인 페이지로 즉시 리다이렉트
   };
 
   return (

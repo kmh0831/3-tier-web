@@ -42,24 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (trailerElement) trailerElement.src = ''; // 비디오 멈춤
         });
 
-        // 모달 표시 함수 (화면 중앙에 위치하도록)
-        const openModal = () => {
-            movieModal.style.display = 'block';
-            movieModal.style.position = 'fixed';
-            movieModal.style.top = '50%';
-            movieModal.style.left = '50%';
-            movieModal.style.transform = 'translate(-50%, -50%)';
-            movieModal.style.width = '660px';
-            movieModal.style.height = '750px';
-            movieModal.style.zIndex = '1000'; // 다른 요소들 위에 표시
-            movieModal.style.backgroundColor = '#2a2c30'; // 모달 배경색
-        };
-
         // 모달 열기 이벤트 (예: 포스터 클릭 시)
         const posterElements = document.querySelectorAll('.movie-item');
         if (posterElements.length > 0) {
             posterElements.forEach((poster) => {
-                poster.addEventListener('click', openModal);
+                poster.addEventListener('click', () => {
+                    movieModal.style.display = 'block';
+                    movieModal.style.position = 'fixed';
+                    movieModal.style.top = '50%';
+                    movieModal.style.left = '50%';
+                    movieModal.style.transform = 'translate(-50%, -50%)';
+                    movieModal.style.width = '660px';
+                    movieModal.style.height = '750px';
+                    movieModal.style.zIndex = '1000'; // 다른 요소들 위에 표시
+                    movieModal.style.backgroundColor = '#2a2c30'; // 모달 배경색
+                });
             });
         }
     }
@@ -87,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
-            fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/user/login`, {
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })

@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // 리다이렉트 기능을 사용하기 위해 추가
-import './Profile.css';  // Profile 관련 스타일을 import
-import Favorites from './Favorites'; // 찜한 목록 컴포넌트 가져오기
+import { useNavigate } from 'react-router-dom';
+import './Profile.css';  // Profile 관련 스타일 import
+import Favorites from './Favorites';  // 찜한 목록 컴포넌트 가져오기
 
 function Profile({ onClose }) {
   const [userInfo, setUserInfo] = useState(null);
-  const [isInfoLoaded, setIsInfoLoaded] = useState(false);  // 정보 로딩 여부를 확인하는 상태 추가
-  const navigate = useNavigate();  // useNavigate 훅으로 리다이렉트 처리
+  const [isInfoLoaded, setIsInfoLoaded] = useState(false);  // 정보 로딩 여부 상태 추가
+  const navigate = useNavigate();
 
   const loadUserInfo = () => {
     const token = localStorage.getItem('token');  // JWT 토큰 가져오기
     if (token && !isInfoLoaded) {  // 사용자 정보가 아직 로딩되지 않았다면
-      fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/user/me`, {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -28,13 +28,12 @@ function Profile({ onClose }) {
   };
 
   const handleLogout = () => {
-    // 로그아웃 시 토큰 삭제
-    localStorage.removeItem('token');
-    localStorage.removeItem('token_expiration');
-
-    // 모달을 닫고 리다이렉트
+    localStorage.removeItem('token');  // JWT 토큰 삭제
+    localStorage.removeItem('token_expiration');  // 만료 시간 삭제
     onClose();  // 모달 닫기
-    navigate('/login');  // 로그인 페이지로 즉시 리다이렉트
+
+    // 로그아웃 후 즉시 로그인 페이지로 리다이렉트
+    navigate('/login');
   };
 
   return (
@@ -44,7 +43,7 @@ function Profile({ onClose }) {
         <div className="modal-banner">
           <div className="banner-item" onClick={loadUserInfo}>내 정보</div>
           <div className="banner-item">찜한 목록</div>
-          <div className="banner-item" onClick={handleLogout}>로그아웃</div>
+          <div className="banner-item" onClick={handleLogout}>로그아웃</div> {/* 로그아웃 버튼 */}
         </div>
 
         {/* 오른쪽 프로필 정보 */}
@@ -65,7 +64,7 @@ function Profile({ onClose }) {
           {/* 찜한 영화 목록 */}
           <h3>찜한 영화 목록</h3>
           <Favorites />  {/* 찜한 목록 표시 */}
-          
+
           {/* 감사 인사 */}
           <p>항상 저희 ROCKET 사이트를 이용해주셔서 감사합니다.</p>
         </div>

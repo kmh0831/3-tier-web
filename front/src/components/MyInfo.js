@@ -5,7 +5,7 @@ function MyInfo() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/user/profile`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/user/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())

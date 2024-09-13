@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
+import { CognitoUserPool } from 'amazon-cognito-identity-js';
 import { useNavigate } from 'react-router-dom';
 import './Signup.css';
+
+// Cognito User Pool 설정
+const userPool = new CognitoUserPool({
+  UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL_ID,
+  ClientId: process.env.REACT_APP_COGNITO_CLIENT_ID,
+});
 
 function Signup() {
   const [email, setEmail] = useState('');
@@ -9,45 +16,35 @@ function Signup() {
   const [phone, setPhone] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false); // 로딩 상태 추가
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    setLoading(true); // 로딩 시작
-    setError(null); // 에러 초기화
-    setSuccess(false); // 성공 메시지 초기화
+    setLoading(true);
+    setError(null);
 
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/user/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password, name, phone }),
-      });
-
-      if (response.ok) {
-        setSuccess(true);
-        setLoading(false); // 로딩 종료
-        setTimeout(() => navigate('/login'), 1000); // 1초 후 로그인 페이지로 이동
+    userPool.signUp(email, password, [
+      { Name: 'name', Value: name },
+      { Name: 'email', Value: email },
+      { Name: 'phone_number', Value: phone }
+    ], null, (err, result) => {
+      setLoading(false);
+      if (err) {
+        setError(err.message || JSON.stringify(err));
       } else {
-        const errorData = await response.json();
-        setLoading(false); // 로딩 종료
-        setError(errorData.error || '회원가입 중 문제가 발생했습니다.');
+        setSuccess(true);
+        setTimeout(() => navigate('/login'), 1000); // 1초 후 로그인 페이지로 이동
       }
-    } catch (error) {
-      setLoading(false); // 로딩 종료
-      setError('회원가입 중 오류가 발생했습니다.');
-    }
+    });
   };
 
   return (
     <div className="signup-background">
       <div className="signup-container">
-        <span className="close" onClick={() => navigate('/login')}>×</span> {/* X 버튼 클릭 시 로그인 페이지로 이동 */}
+        <span className="close" onClick={() => navigate('/login')}>×</span>
         <h2>Sign Up</h2>
-        {loading && <div>회원가입 처리 중입니다...</div>} {/* 로딩 메시지 */}
+        {loading && <div>회원가입 처리 중입니다...</div>}
         {error && <div style={{ color: 'red' }}>{error}</div>}
         {success && <div style={{ color: 'green' }}>회원가입이 성공적으로 완료되었습니다!</div>}
         <form onSubmit={handleSignup}>

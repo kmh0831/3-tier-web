@@ -5,7 +5,7 @@ function Favorites() {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/me/favorites`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/me/favorites`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((response) => response.json())

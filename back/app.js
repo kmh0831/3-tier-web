@@ -28,6 +28,11 @@ app.get('/', (req, res) => {
   res.send('API 서버가 정상적으로 작동 중입니다.');
 });
 
+// Express 서버에 헬스 체크 경로 추가
+app.get('/api/health', (req, res) => {
+  res.status(200).send('Healthy');
+});
+
 // 404 에러 처리 (잘못된 경로 요청)
 app.use((req, res, next) => {
   res.status(404).json({ message: '요청하신 페이지를 찾을 수 없습니다.' });

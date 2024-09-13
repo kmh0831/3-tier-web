@@ -6,7 +6,7 @@ function MovieDetail({ movie, onClose }) {
 
   useEffect(() => {
     // 찜한 상태 확인
-    fetch(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/movies/favorites`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/movies/favorites`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     })
       .then((response) => {
@@ -27,8 +27,8 @@ function MovieDetail({ movie, onClose }) {
   const toggleFavorite = () => {
     const method = isFavorite ? 'DELETE' : 'POST';
     const url = isFavorite
-      ? `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/movies/favorite/${movie.id}`
-      : `${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/movies/favorite`;
+      ? `${process.env.REACT_APP_BACKEND_URL}/api/movies/favorite/${movie.id}`
+      : `${process.env.REACT_APP_BACKEND_URL}/api/movies/favorite`;
 
     fetch(url, {
       method: method,
@@ -42,7 +42,7 @@ function MovieDetail({ movie, onClose }) {
   };
 
   const handleWatchClick = () => {
-    window.open(`${process.env.REACT_APP_BACKEND_URL}:${process.env.REACT_APP_PORT}/api/movies/${movie.id}/watch`);
+    window.open(`${process.env.REACT_APP_BACKEND_URL}/api/movies/${movie.id}/watch`);
   };
 
   return (

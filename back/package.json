@@ -8,7 +8,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "jsonwebtoken": "^8.5.1",
-    "bcryptjs": "^2.4.3"
+    "bcryptjs": "^2.4.3",
+    "aws-sdk": "^2.1194.0"
   },
   "scripts": {
     "start": "node app.js"

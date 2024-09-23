@@ -48,7 +48,7 @@ function App() {
         {isAuthenticated && (
           <header>
             <div className="logo">
-              <img src="https://s3-rocket-ott.s3.ap-northeast-2.amazonaws.com/Logo.png" alt="ROCKET 로고" />
+              <img src="https://s3-rocket-ott.s3.ap-northeast-2.amazonaws.com/image/Logo.png" alt="ROCKET 로고" />
             </div>
             <div className="profile" id="profile-tab">
               <button onClick={openProfile}>프로필</button> {/* 프로필 모달 열기 */}
@@ -111,8 +111,14 @@ function App() {
 
           {/* 영화 상세 페이지 */}
           <Route
-            path="/movies/:movieId"  
+            path="/movies/:movieId"
             element={isAuthenticated ? <MovieDetail /> : <Navigate to="/login" />}
+          />
+
+          {/* 영화 시청 페이지 추가 */}
+          <Route
+            path="/movies/:movieId/watch"
+            element={isAuthenticated ? <MovieWatch /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>
@@ -121,3 +127,4 @@ function App() {
 }
 
 export default App;
+
